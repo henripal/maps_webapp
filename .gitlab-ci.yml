@@ -1,0 +1,5 @@
+before_script:
+  - docker build -t webapp_frontend /backend/.
+
+running_it:
+  - docker run -p 8080:8080 webapp_frontend

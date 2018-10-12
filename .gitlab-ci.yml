@@ -4,7 +4,7 @@ services:
   - docker:dind
 
 before_script:
-  - docker build -t webapp_frontend /backend/.
+  - docker build -t webapp_frontend ./backend/.
 
 running_it:
   script:

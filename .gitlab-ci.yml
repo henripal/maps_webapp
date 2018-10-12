@@ -1,8 +1,8 @@
+image: gitlab/dind
+
 before_script:
   - docker build -t webapp_frontend /backend/.
 
 running_it:
-  only: [tags]
-  tags: [docker]
   script:
     - docker run -p 8080:8080 webapp_frontend

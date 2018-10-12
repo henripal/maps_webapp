@@ -1,5 +1,5 @@
 before_script:
-  - docker build -t webapp_frontend ./backend/.
+  - docker build -t webapp_frontend ./frontend/.
 
 running_it:
   script:

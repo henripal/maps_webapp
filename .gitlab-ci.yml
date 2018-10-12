@@ -1,4 +1,7 @@
-image: alpine:latest
+image: docker:stable
+
+services:
+  - docker:dind
 
 before_script:
   - docker build -t webapp_frontend /backend/.

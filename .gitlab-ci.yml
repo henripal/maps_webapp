@@ -14,4 +14,4 @@ buildandtest:
 deploy:
   stage: deploy
   script:
-    - ssh root@159.203.183.2 touch hiya.txt
+    - ssh root@159.203.183.2 touch hiya2.txt

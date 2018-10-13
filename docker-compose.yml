@@ -2,7 +2,7 @@ version: '3'
 
 services:
     frontend:
-        build: ./frontend/
+        image: registry.gitlab.com/henripal/webapp_template/frontend 
 
 
     caddy:
@@ -16,6 +16,6 @@ services:
             - frontend
 
     backend:
-        build: ./backend/
+        image: registry.gitlab.com/henripal/webapp_template/backend 
         ports:
             - 8888:8888

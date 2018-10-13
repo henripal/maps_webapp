@@ -4,5 +4,6 @@ before_script:
   - npm --prefix frontend run build
 
 
-script:
-  - ssh root@159.203.183.2 touch hi.txt
+running_it:
+  script:
+    - ssh root@159.203.183.2 touch hi.txt

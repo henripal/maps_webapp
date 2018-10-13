@@ -6,10 +6,10 @@ buildandtest:
   stage: buildandtest
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
-    - docker build -t registry.gitlab.com/henripal/backend ./backend/.
-    - docker push registry.gitlab.com/henripal/backend
-    - docker build -t registry.gitlab.com/henripal/frontend ./frontend/.
-    - docker push registry.gitlab.com/henripal/frontend
+    - docker build -t registry.gitlab.com/henripal/webapp_template/backend ./backend/.
+    - docker push registry.gitlab.com/henripal/webapp_template/backend
+    - docker build -t registry.gitlab.com/henripal/webapp_template/frontend ./frontend/.
+    - docker push registry.gitlab.com/henripal/webapp_template/frontend
 
 deploy:
   stage: deploy

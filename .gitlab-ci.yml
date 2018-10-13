@@ -1,6 +1,13 @@
-before_script:
-  - docker build -t backend ./backend/.
+stages:
+  - buildandtest
+  - deploy
 
-running_it:
+buildandtest:
+  stage: buildandtest
+  script:
+    - docker build -t backend ./backend/.
+    - docker build -t frontend ./frontend/.
+
+deply:
   script:
     - ssh root@159.203.183.2 touch hiya.txt

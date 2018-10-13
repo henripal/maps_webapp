@@ -1,6 +1,8 @@
 before_script:
-  - docker build -t webapp_frontend ./frontend/.
+  - docker build -t backend ./backend/.
+  - npm --prefix frontend run test:unit
+  - npm --prefix frontend run build
 
-running_it:
+:
   script:
-    - docker run -p 8080:8080 webapp_frontend
+    - ssh root@159.203.183.2 touch hi.txt

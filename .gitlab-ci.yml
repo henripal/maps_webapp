@@ -1,8 +1,5 @@
 before_script:
   - docker build -t backend ./backend/.
-  - npm --prefix frontend run test:unit
-  - npm --prefix frontend run build
-
 
 running_it:
   script:

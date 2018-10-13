@@ -8,6 +8,7 @@ buildandtest:
     - docker build -t backend ./backend/.
     - docker build -t frontend ./frontend/.
 
-deply:
+deploy:
+  stage: deploy
   script:
     - ssh root@159.203.183.2 touch hiya.txt

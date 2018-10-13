@@ -15,6 +15,9 @@ deploy:
   stage: deploy
   script:
     - scp docker-compose.yml root@159.203.183.2:~/
+    - ssh root@159.203.183.2 mkdir  -p ~/frontend/dist
+    - scp ./frontend/Caddyfile root@159.203.183.2:~/frontend/Caddyfile
+    - scp -r ./frontend/dist root@159.203.183.2:~/frontend/dist
     - ssh root@159.203.183.2 docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
     - ssh root@159.203.183.2 docker-compose up -d
 

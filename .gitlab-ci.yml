@@ -6,4 +6,4 @@ before_script:
 
 running_it:
   script:
-    - ssh root@159.203.183.2 touch hi.txt
+    - ssh root@159.203.183.2 touch hiya.txt

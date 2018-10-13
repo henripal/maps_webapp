@@ -3,17 +3,8 @@ version: '3'
 services:
     frontend:
         image: registry.gitlab.com/henripal/webapp_template/frontend 
-
-
-    caddy:
-        image: abiosoft/caddy
         ports:
-            - 8080:8080
-        volumes: 
-            - ./frontend/dist:/srv
-            - ./frontend/Caddyfile:/etc/Caddyfile
-        depends_on:
-            - frontend
+          - 8080:8080
 
     backend:
         image: registry.gitlab.com/henripal/webapp_template/backend 

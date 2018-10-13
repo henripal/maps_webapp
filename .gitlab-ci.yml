@@ -7,8 +7,8 @@ buildandtest:
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
     - docker build -t registry.gitlab.com/henripal/backend ./backend/.
-    - docker build -t registry.gitlab.com/henripal/frontend ./frontend/.
     - docker push registry.gitlab.com/henripal/backend
+    - docker build -t registry.gitlab.com/henripal/frontend ./frontend/.
     - docker push registry.gitlab.com/henripal/frontend
 
 deploy:

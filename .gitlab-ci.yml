@@ -16,5 +16,6 @@ deploy:
   script:
     - scp docker-compose.yml root@159.203.183.2:~/
     - ssh root@159.203.183.2 docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+    - ssh root@159.203.183.2 docker-compose down --rmi all --remove-orphans
     - ssh root@159.203.183.2 docker-compose up -d
 

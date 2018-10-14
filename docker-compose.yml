@@ -3,7 +3,7 @@ version: '3'
 services:
     frontend:
         environment:
-          - VUE_APP_DATA_URL=http://159.203.183.2:8888/data
+          - VUE_APP_DATA_URL="http://159.203.183.2:8888/data"
         image: registry.gitlab.com/henripal/webapp_template/frontend 
         ports:
           - 8080:8080

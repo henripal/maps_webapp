@@ -11,7 +11,8 @@ export default {
     msg: String
   },
   mounted () {
-    this.$http.get("http://localhost:8888/data").then((response) => {
+    console.log(process.env.VUE_APP_DATA_URL)
+    this.$http.get(process.env.VUE_APP_DATA_URL).then((response) => {
       console.log(response.data)
     })
   }

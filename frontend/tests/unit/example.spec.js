@@ -5,7 +5,7 @@ describe('HelloWorld.vue', () => {
   it('renders props.msg when passed', () => {
     const msg = 'newmessage'
     const wrapper = shallowMount(HelloWorld, {
-      propsData: { msg },
+      propsData: { "wow" },
       mocks: {
         $http: {get:
           jest.fn(() => Promise.resolve({data: {}}))

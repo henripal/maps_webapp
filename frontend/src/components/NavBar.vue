@@ -1,7 +1,8 @@
 <template>
-  <b-navbar type="dark" variant="primary">
+  <b-navbar type="dark" variant="primary" toggleable="md">
     <b-navbar-brand to="/">NewCo</b-navbar-brand>
       <b-navbar-nav>
+        <ModalSignup/>
         <b-nav-item to="/about">About</b-nav-item>
     </b-navbar-nav>
   </b-navbar>
@@ -13,12 +14,16 @@
 </template>
 
 <script>
+import ModalSignup from '../components/ModalSignup.vue'
 
 export default {
   name: 'NavBar',
   data() {
     return {
     }
+  },
+  components: {
+    ModalSignup
   },
   props: {
   },

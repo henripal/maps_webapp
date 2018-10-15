@@ -1,20 +1,31 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <h1>{{ myData }}</h1>
+    <button v-on:click="showAlert"> what</button>
   </div>
 </template>
 
 <script>
+
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
   },
+  methods: {
+    showAlert: function(event) {
+      alert(this.myData)
+    }
+  },
+  computed: {
+    myData () {
+      return this.$store.getters.data
+    }
+  },
   mounted () {
-    console.log(process.env.VUE_APP_DATA_URL)
-    this.$http.get(process.env.VUE_APP_DATA_URL).then((response) => {
-      console.log(response.data)
-    })
+    console.log(this.$store.getters.data)
+    console.log("logged from mounted")
   }
 }
 </script>

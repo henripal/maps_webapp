@@ -12,6 +12,9 @@ export default {
   name: 'home',
   components: {
     HelloWorld
+  }, 
+  mounted() {
+    this.$store.dispatch("getData")
   }
 }
 </script>

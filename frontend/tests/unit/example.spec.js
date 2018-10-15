@@ -9,6 +9,11 @@ describe('HelloWorld.vue', () => {
       mocks: {
         $http: {get:
           jest.fn(() => Promise.resolve({data: {}}))
+        },
+        $store: {
+          getters: {
+            data: "hi"
+          }
         }
       }
     })

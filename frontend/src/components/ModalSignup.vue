@@ -7,10 +7,13 @@
         <b-form-group horizontal
           label="Email address:"
           label-text-align="left"
+          :invalid-feedback="emailAlreadyInDatabase"
+          :state = "validInput"
         >
           <b-form-input type="email"
             v-model="form.email"
             required
+            :state = "validInput"
             placeholder="Enter email"
           ></b-form-input>
         </b-form-group>
@@ -69,6 +72,7 @@ export default {
       },
       showModal: false,
       showForm: true,
+      validInput: null
     }
   },
   props: {
@@ -76,8 +80,14 @@ export default {
   methods: {
     onSubmit (evt) {
       evt.preventDefault();
-      alert(JSON.stringify(this.form));
-      this.showModal = false
+      this.$store.dispatch("postSignup", JSON.stringify(this.form))
+      .then((response) => {
+        console.log(response)
+        this.showModal = false
+      })
+      .catch((error) => {
+        this.validInput = false
+        console.log(error.response)})
     },
     onReset (evt) {
       evt.preventDefault();
@@ -92,6 +102,13 @@ export default {
     }
   },
   computed: {
+    emailAlreadyInDatabase () {
+      if (this.invalidInput) {
+        return "Username already in database"
+      } else {
+        return ''
+      }
+    }
   },
   mounted () {
   }

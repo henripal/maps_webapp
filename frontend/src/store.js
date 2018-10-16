@@ -20,6 +20,9 @@ export default new Vuex.Store({
         console.log(response.data)
         context.commit("setData", response.data)
       })
+    },
+    postSignup(context, payload) {
+      return axios.post(process.env.VUE_APP_DATA_URL + "signup", payload)      
     }
   },
   getters: {

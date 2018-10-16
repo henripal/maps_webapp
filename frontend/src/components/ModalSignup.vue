@@ -80,6 +80,7 @@ export default {
   methods: {
     onSubmit (evt) {
       evt.preventDefault();
+      console.log(JSON.stringify(this.form))
       this.$store.dispatch("postSignup", JSON.stringify(this.form))
       .then((response) => {
         console.log(response)
@@ -103,10 +104,10 @@ export default {
   },
   computed: {
     emailAlreadyInDatabase () {
-      if (this.invalidInput) {
-        return "Username already in database"
+      if (this.validInput) {
+        return ""
       } else {
-        return ''
+        return "Username already in database"
       }
     }
   },

@@ -2,6 +2,7 @@ FROM golang:1.11.1 as builder
 WORKDIR /app
 COPY . .	
 RUN go get github.com/rs/cors
+RUN go get golang.org/x/crypto/bcrypt 
 RUN go test .
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o backend .
 

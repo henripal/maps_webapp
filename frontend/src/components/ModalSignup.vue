@@ -80,10 +80,8 @@ export default {
   methods: {
     onSubmit (evt) {
       evt.preventDefault();
-      console.log(JSON.stringify(this.form))
       this.$store.dispatch("postSignup", JSON.stringify(this.form))
       .then((response) => {
-        console.log(response)
         this.showModal = false
       })
       .catch((error) => {

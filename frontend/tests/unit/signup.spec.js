@@ -5,23 +5,20 @@ import BootstrapVue from 'bootstrap-vue'
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
 
-describe('NavBar.vue', () => {
+describe('ModalSignup.vue', () => {
   const wrapper = mount(ModalSignup, {
     localVue,
     propsData: {  },
     mocks: {
-      // $http: {get:
-      //   jest.fn(() => Promise.resolve({data: {}}))
-      // },
       $store: {
-        dispatch(a, b) {
-          return new Promise(function(resolve, reject) {
+        dispatch() {
+          return new Promise(function(resolve) {
             resolve('foo')
           })
         },
         actions : {
-          postSignup(ctx, payload) {
-            return new Promise(function(resolve, reject) {
+          postSignup() {
+            return new Promise(function(resolve) {
               resolve('foo')
             })
           }
@@ -40,8 +37,9 @@ describe('NavBar.vue', () => {
   it('it closes after data is given to it', (done) => {
     wrapper.find(".nav-link").trigger("click")
     wrapper.vm.$nextTick(() => {
-      wrapper.find("input").value = "name"
-      wrapper.find("input").trigger('input') 
+      const input = wrapper.find("input")
+      input.element.value = "name"
+      input.trigger('input') 
       wrapper.find("button").trigger("click")
       wrapper.vm.$nextTick(() => {
         expect(wrapper.vm.showModal).toBe(false)
@@ -52,13 +50,12 @@ describe('NavBar.vue', () => {
   it('sends the right data to vuex', (done) => {
     wrapper.find(".nav-link").trigger("click")
     wrapper.vm.$nextTick(() => {
-      wrapper.find("input").element.value = "name"
-      wrapper.find("input").trigger('input') 
-      console.log(wrapper.find("input").html())
+      const input = wrapper.find("input")
+      input.element.value = "name"
+      input.trigger('input') 
       wrapper.vm.$nextTick(() => {
         wrapper.find(".btn-primary").trigger("click")
         wrapper.vm.$nextTick(() => {
-          console.log(wrapper.vm.form)
           expect(wrapper.vm.form.email).toEqual("name")
           done()
         })

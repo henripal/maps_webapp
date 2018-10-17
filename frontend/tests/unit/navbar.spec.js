@@ -14,11 +14,11 @@ describe('NavBar.vue', () => {
         // $http: {get:
         //   jest.fn(() => Promise.resolve({data: {}}))
         // },
-        // $store: {
-        //   getters: {
-        //     data: "hi"
-        //   }
-        // }
+        $store: {
+          getters: {
+            loggedIn: false
+          }
+        }
       }
     })
     expect(wrapper.find(".navbar-brand").text()).toMatch("NewCo")

@@ -1,19 +1,19 @@
 <template>
   <div>
     <b-nav-item v-b-modal.signup-form>Signup</b-nav-item>
-    <b-modal id="signup-form" title="Sign Up" v-model="showModal">
+    <b-modal id="signup-form" title="Sign Up" v-model="showModal"
+      @shown="focusEmail"
+      >
       <b-form v-if="showForm">
 
         <b-form-group horizontal
           label="Email address:"
           label-text-align="left"
-          :invalid-feedback="emailAlreadyInDatabase"
-          :state = "validInput"
         >
           <b-form-input type="email"
+            ref="focusThis"
             v-model="form.email"
             required
-            :state = "validInput"
             placeholder="Enter email"
           ></b-form-input>
         </b-form-group>
@@ -46,8 +46,10 @@
             v-model="form.password"
             required
             placeholder="Enter password"
+            v-on:keyup.enter.native="onSubmit"
           ></b-form-input>
         </b-form-group>
+        <b-alert :show="showAlert" variant="danger">{{ alertText }}</b-alert>
       </b-form>
         <div slot="modal-footer">
           <b-button variant="primary" @click="onSubmit">Submit</b-button>
@@ -70,23 +72,38 @@ export default {
         lastName: '',
         password: '',
       },
+      showAlert: false,
+      alertText: "",
       showModal: false,
       showForm: true,
-      validInput: null
     }
   },
-  props: {
+  watch: {
+    showModal: function (old, n) {
+      if (old === true && n === false ) {
+        this.showAlert = false
+        this.alertText = ""
+      }
+
+    }
   },
   methods: {
+    focusEmail () {
+      this.$refs.focusThis.focus()
+    },
     onSubmit (evt) {
+      console.log("calling onsumbit")
       evt.preventDefault();
       this.$store.dispatch("postSignup", JSON.stringify(this.form))
       .then((response) => {
+        console.log(response);
         this.showModal = false
+        this.$store.dispatch('getUser')
       })
       .catch((error) => {
-        this.validInput = false
-        console.log(error.response)})
+        this.alertText = error.response.data
+        this.showAlert = true
+      })
     },
     onReset (evt) {
       evt.preventDefault();
@@ -98,15 +115,6 @@ export default {
       /* Trick to reset/clear native browser form validation state */
       this.showForm = false;
       this.$nextTick(() => { this.showForm = true });
-    }
-  },
-  computed: {
-    emailAlreadyInDatabase () {
-      if (this.validInput) {
-        return ""
-      } else {
-        return "Username already in database"
-      }
     }
   },
   mounted () {

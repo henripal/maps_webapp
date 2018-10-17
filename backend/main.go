@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"webapp_template/backend/auth"
+	"webapp_template/backend/usersapi"
 
 	"github.com/rs/cors"
 )
@@ -20,6 +21,13 @@ func backendPortEnvVariable() string {
 }
 
 func main() {
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:8080"},
+		AllowCredentials: true,
+	})
+
 	http.HandleFunc("/signup", auth.Signup)
-	http.ListenAndServe(":"+backendPortEnvVariable(), cors.Default().Handler(http.DefaultServeMux))
+	http.HandleFunc("/signin", auth.Signin)
+	http.HandleFunc("/user", usersapi.User)
+	http.ListenAndServe(":"+backendPortEnvVariable(), c.Handler(http.DefaultServeMux))
 }

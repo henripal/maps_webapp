@@ -19,8 +19,28 @@ type User struct {
 	Password  passwordHash `json:"password"`
 }
 
+// SigninUser is the type to be decoded for signin
+type SigninUser struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 // DbUser is the stub of the user database
 var DbUser = map[string]User{}
+
+// ValidUser returns nil if the user is verified and authenticated
+func ValidUser(u SigninUser) error {
+	userFromDb, ok := DbUser[u.Email]
+	if !ok {
+		return errors.New("Email not recognized")
+	}
+	err := bcrypt.CompareHashAndPassword(userFromDb.Password, []byte(u.Password))
+	if err != nil {
+		return errors.New("Password Incorrect")
+	}
+
+	return nil
+}
 
 // UnmarhsalJSON for password lets us unmarshal directly to a hash
 func (p *passwordHash) UnmarshalJSON(data []byte) error {

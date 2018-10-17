@@ -2,8 +2,16 @@
   <b-navbar type="dark" variant="primary" toggleable="md">
     <b-navbar-brand to="/">NewCo</b-navbar-brand>
       <b-navbar-nav>
-        <ModalSignup/>
+        <template v-if="!loggedIn">
+          <ModalSignup/>
+          <ModalSignin/>
+        </template>
+        <template v-else>
+          <UserMenu/>
+        </template>
+
         <b-nav-item to="/about">About</b-nav-item>
+
     </b-navbar-nav>
   </b-navbar>
   <!-- <div class="navbar">
@@ -15,6 +23,8 @@
 
 <script>
 import ModalSignup from '../components/ModalSignup.vue'
+import ModalSignin from '../components/ModalSignin.vue'
+import UserMenu from '../components/UserMenu.vue'
 
 export default {
   name: 'NavBar',
@@ -23,13 +33,18 @@ export default {
     }
   },
   components: {
-    ModalSignup
+    ModalSignup,
+    ModalSignin,
+    UserMenu,
   },
   props: {
   },
   methods: {
   },
   computed: {
+    loggedIn () {
+      return this.$store.getters.loggedIn
+    },
   },
   mounted () {
   }

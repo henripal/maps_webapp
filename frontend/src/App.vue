@@ -14,6 +14,9 @@ export default {
   name: 'app',
   components: {
     NavBar
+  },
+  created () {
+    this.$store.dispatch('getUser')
   }
 }
 </script>

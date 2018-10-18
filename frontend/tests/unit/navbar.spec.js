@@ -20,7 +20,7 @@ describe('NavBar.vue', () => {
       propsData: {  },
       mocks: { $store: { getters: { loggedIn: false }}}
     })
-    expect(wrapper.find(".nav-link").text()).toMatch("Signup")
+    expect(wrapper.find(".nav-link").text()).toMatch("Signin")
   })
   it("has two elements when user is not logged in", () => {
     const wrapper = mount(NavBar, {

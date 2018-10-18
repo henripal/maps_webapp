@@ -28,19 +28,19 @@ describe('ModalSignup.vue', () => {
   })
   it('is shown when clicked', (done) => {
     expect(wrapper.vm.showModal).toBe(false)
-    wrapper.find(".nav-link").trigger("click")
+    wrapper.find("button.btn").trigger("click")
     wrapper.vm.$nextTick(() => {
       expect(wrapper.vm.showModal).toBe(true)
       done()
     })
   })
   it('it closes after data is given to it', (done) => {
-    wrapper.find(".nav-link").trigger("click")
+    wrapper.find("button.btn").trigger("click")
     wrapper.vm.$nextTick(() => {
       const input = wrapper.find("input")
       input.element.value = "name"
       input.trigger('input') 
-      wrapper.find("button").trigger("click")
+      wrapper.find("button.btn.btn-primary").trigger("click")
       wrapper.vm.$nextTick(() => {
         expect(wrapper.vm.showModal).toBe(false)
         done()
@@ -48,13 +48,13 @@ describe('ModalSignup.vue', () => {
     })
   })
   it('sends the right data to vuex', (done) => {
-    wrapper.find(".nav-link").trigger("click")
+    wrapper.find("button.btn").trigger("click")
     wrapper.vm.$nextTick(() => {
       const input = wrapper.find("input")
       input.element.value = "name"
       input.trigger('input') 
       wrapper.vm.$nextTick(() => {
-        wrapper.find(".btn-primary").trigger("click")
+        wrapper.find("button.btn.btn-primary").trigger("click")
         wrapper.vm.$nextTick(() => {
           expect(wrapper.vm.form.email).toEqual("name")
           done()

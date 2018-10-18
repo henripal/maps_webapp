@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-nav-item v-b-modal.signup-form>Signup</b-nav-item>
+    <b-button v-b-modal.signup-form variant="secondary">Signup</b-button>
     <b-modal id="signup-form" title="Sign Up" v-model="showModal"
       @shown="focusEmail"
       >

@@ -1,7 +1,7 @@
 <template>
   <b-navbar type="dark" variant="primary" toggleable="md">
     <b-navbar-brand to="/">NewCo</b-navbar-brand>
-      <b-navbar-nav>
+      <b-navbar-nav class="ml-auto">
         <template v-if="!loggedIn">
           <ModalSignup/>
           <ModalSignin/>

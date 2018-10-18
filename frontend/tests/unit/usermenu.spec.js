@@ -22,6 +22,6 @@ describe('UserMenu.vue', () => {
   })
   it('is displays name when store is set', () => {
     console.log(wrapper.html())
-    expect(wrapper.find(".nav-link").text()).toBe("dafy")
+    expect(wrapper.find(".nav-link").text()).toBe("dafi")
   })
 })

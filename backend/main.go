@@ -28,6 +28,7 @@ func main() {
 
 	http.HandleFunc("/signup", auth.Signup)
 	http.HandleFunc("/signin", auth.Signin)
+	http.HandleFunc("/logout", usersapi.Logout)
 	http.HandleFunc("/user", usersapi.User)
 	http.ListenAndServe(":"+backendPortEnvVariable(), c.Handler(http.DefaultServeMux))
 }

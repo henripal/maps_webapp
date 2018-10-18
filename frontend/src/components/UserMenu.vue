@@ -1,6 +1,8 @@
 
 <template>
-    <b-nav-item>{{ firstName  }}</b-nav-item>
+ <b-nav-item-dropdown :text="firstName">
+    <b-dropdown-item @click="logOut">Logout</b-dropdown-item>
+    </b-nav-item-dropdown>
 </template>
 
 <script>
@@ -11,6 +13,9 @@ export default {
     }
   },
   methods: {
+      logOut () {
+          this.$store.dispatch("logOut")
+      }
   },
   computed: {
     firstName () {
@@ -20,6 +25,5 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 </style>

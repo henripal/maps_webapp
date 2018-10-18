@@ -10,17 +10,24 @@ describe('NavBar.vue', () => {
     const wrapper = mount(NavBar, {
       localVue,
       propsData: {  },
-      mocks: {
-        // $http: {get:
-        //   jest.fn(() => Promise.resolve({data: {}}))
-        // },
-        $store: {
-          getters: {
-            loggedIn: false
-          }
-        }
-      }
+      mocks: { $store: { getters: { loggedIn: false }}}
     })
     expect(wrapper.find(".navbar-brand").text()).toMatch("NewCo")
+  }),
+  it("shows signup and signin when user isn't logged in", () => {
+    const wrapper = mount(NavBar, {
+      localVue,
+      propsData: {  },
+      mocks: { $store: { getters: { loggedIn: false }}}
+    })
+    expect(wrapper.find(".nav-link").text()).toMatch("Signup")
+  })
+  it("has two elements when user is not logged in", () => {
+    const wrapper = mount(NavBar, {
+      localVue,
+      propsData: {  },
+      mocks: { $store: { getters: { loggedIn: true }}}
+    })
+    expect(wrapper.findAll(".nav-link").length).toBe(2)
   })
 })

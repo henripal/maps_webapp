@@ -13,9 +13,24 @@ export default new Vuex.Store({
     logUserIn(currentState, user) {
       currentState.user = user
       currentState.loggedIn = true
+    },
+    logUserOut(currentState) {
+      currentState.user = null
+      currentState.loggedIn = false
     }
   },
   actions: {
+    logOut(context) {
+      axios({
+        method: "get",
+        url: process.env.VUE_APP_DATA_URL + "logout",
+        withCredentials: true
+      }).then(() => {
+        context.commit("logUserOut")
+      }).catch((error) => {
+        console.log(error.response)
+      })
+    },
     postSignup(context, payload) {
       return axios({
         method: "post",

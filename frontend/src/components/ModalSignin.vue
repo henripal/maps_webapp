@@ -92,9 +92,6 @@ export default {
       this.$nextTick(() => { this.showForm = true });
     }
   },
-  mounted () {
-    console.log(this.$store.getters.cookie)
-  }
 }
 </script>
 

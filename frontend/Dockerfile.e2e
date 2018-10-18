@@ -1,0 +1,7 @@
+FROM node:10.12.0 as builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 8080
+RUN npm run test:e2e

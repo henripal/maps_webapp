@@ -1,15 +1,23 @@
 stages:
-  - buildandtest
+  - build_and_unit_test
+  - e2e_test
   - deploy
 
-buildandtest:
-  stage: buildandtest
+build_and_unit_test:
+  stage: build_and_unit_test
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
     - docker build -t registry.gitlab.com/henripal/webapp_template/backend ./backend/.
     - docker push registry.gitlab.com/henripal/webapp_template/backend
     - docker build -t registry.gitlab.com/henripal/webapp_template/frontend ./frontend/.
     - docker push registry.gitlab.com/henripal/webapp_template/frontend
+
+e2e_test:
+  stage: e2e_test
+  script:
+    - docker run -p 8888:8888 registry.gitlab.com/henripal/webapp_template/backend
+    - docker build -t frontend_test -f Dockerfile.app ./frontend/.
+    - docker run -p 8080:8080 frontend_test
 
 deploy:
   stage: deploy

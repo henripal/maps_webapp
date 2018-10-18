@@ -1,6 +1,5 @@
 stages:
   - build_and_unit_test
-  - e2e_test
   - deploy
 
 build_and_unit_test:
@@ -12,13 +11,6 @@ build_and_unit_test:
     - docker build -t registry.gitlab.com/henripal/webapp_template/frontend ./frontend/.
     - docker push registry.gitlab.com/henripal/webapp_template/frontend
 
-e2e_test:
-  stage: e2e_test
-  script:
-    - docker kill $(docker ps -q)
-    - docker run -d -p 8888:8888 registry.gitlab.com/henripal/webapp_template/backend
-    - docker build -t frontend_test -f ./frontend/Dockerfile.e2e ./frontend/.
-    - docker run -p 8080:8080 frontend_test
 
 deploy:
   stage: deploy

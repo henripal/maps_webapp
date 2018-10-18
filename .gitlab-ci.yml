@@ -16,7 +16,7 @@ e2e_test:
   stage: e2e_test
   script:
     - docker run -d -p 8888:8888 registry.gitlab.com/henripal/webapp_template/backend
-    - docker build -t frontend_test -f Dockerfile.app ./frontend/.
+    - docker build -t frontend_test -f ./frontend/Dockerfile.e2e ./frontend/.
     - docker run -p 8080:8080 frontend_test
 
 deploy:

@@ -1,6 +1,8 @@
 FROM golang:1.11.1 as builder
 WORKDIR /go/src/webapp_template/backend
 COPY . .	
+ARG DBIP 
+ENV DBIP=$DBIP
 RUN go get github.com/rs/cors
 RUN go get golang.org/x/crypto/bcrypt 
 RUN go get github.com/satori/go.uuid

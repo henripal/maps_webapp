@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -12,6 +13,12 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+func init() {
+	if err := users.InitializeDBUsers(); err != nil {
+		log.Fatalln(err)
+	}
+}
+
 func Test_signup(t *testing.T) {
 	reader := strings.NewReader(`{"email":"daffy@gmail.com","firstName":"daffy","lastName":"duck","password":"quack"}`)
 	req, err := http.NewRequest("POST", "http://example.com/foo", reader)
@@ -22,11 +29,11 @@ func Test_signup(t *testing.T) {
 	res := httptest.NewRecorder()
 	Signup(res, req)
 
-	act := users.DbUser["daffy@gmail.com"]
-	err = bcrypt.CompareHashAndPassword(act.Password, []byte("quack"))
+	act, err := users.GetUser("daffy@gmail.com")
 	if err != nil {
-		t.Fatalf("passwords don't match")
+		t.Fatalf("Unable to get mock user")
 	}
+	err = bcrypt.CompareHashAndPassword(act.Password, []byte("quack"))
 	if act.FirstName != "daffy" {
 		t.Fatalf("first names don't match")
 	}

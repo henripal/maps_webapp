@@ -25,16 +25,13 @@ type SigninUser struct {
 	Password string `json:"password"`
 }
 
-// DbUser is the stub of the user database
-var DbUser = map[string]User{}
-
 // ValidUser returns nil if the user is verified and authenticated
 func ValidUser(u SigninUser) error {
-	userFromDb, ok := DbUser[u.Email]
-	if !ok {
+	userFromDb, err := GetUser(u.Email)
+	if err != nil {
 		return errors.New("Email not recognized")
 	}
-	err := bcrypt.CompareHashAndPassword(userFromDb.Password, []byte(u.Password))
+	err = bcrypt.CompareHashAndPassword(userFromDb.Password, []byte(u.Password))
 	if err != nil {
 		return errors.New("Password Incorrect")
 	}
@@ -59,9 +56,9 @@ func (p *passwordHash) UnmarshalJSON(data []byte) error {
 
 // AddNewUser adds User to database
 func AddNewUser(u User) error {
-	if _, userAlreadyInDb := DbUser[u.Email]; userAlreadyInDb {
+	if _, err := GetUser(u.Email); err == nil {
 		return errors.New("User is already in database")
 	}
-	DbUser[u.Email] = u
-	return nil
+	err := addUser(u)
+	return err
 }

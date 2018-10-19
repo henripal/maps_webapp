@@ -1,10 +1,13 @@
 package main
 
 import (
+	"fmt"
+	"log"
 	"net/http"
 	"os"
 
 	"webapp_template/backend/auth"
+	"webapp_template/backend/users"
 	"webapp_template/backend/usersapi"
 
 	"github.com/rs/cors"
@@ -25,6 +28,12 @@ func main() {
 		AllowedOrigins:   []string{"http://localhost:8080", "http://159.203.183.2:8080"},
 		AllowCredentials: true,
 	})
+
+	if err := users.InitializeDBUsers(); err != nil {
+		log.Fatalln(err)
+	}
+	user, _ := users.GetUser("henri.palacci@gmail.com")
+	fmt.Println(user.FirstName)
 
 	http.HandleFunc("/signup", auth.Signup)
 	http.HandleFunc("/signin", auth.Signin)

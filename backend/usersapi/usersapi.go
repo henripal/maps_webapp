@@ -15,5 +15,10 @@ func User(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	email := sessions.DbSession[cookie.Value]
-	json.NewEncoder(w).Encode(users.DbUser[email])
+	u, err := users.GetUser(email)
+	if err != nil {
+		http.Error(w, "User not found.", http.StatusBadRequest)
+		return
+	}
+	json.NewEncoder(w).Encode(u)
 }

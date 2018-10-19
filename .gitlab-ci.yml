@@ -2,6 +2,9 @@ stages:
   - build_and_unit_test
   - deploy
 
+variables:
+  DBIP: "159.89.230.190"
+
 build_and_unit_test:
   stage: build_and_unit_test
   script:

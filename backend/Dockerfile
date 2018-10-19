@@ -14,5 +14,6 @@ FROM alpine:latest
 RUN apk --no-cache add ca-certificates
 WORKDIR /app
 COPY --from=builder /go/src/webapp_template/backend .
+ENV DBIP=159.89.230.190
 EXPOSE 8888
 CMD ["./backend"]

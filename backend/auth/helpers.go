@@ -10,7 +10,7 @@ import (
 func createSession(w http.ResponseWriter, email string) {
 	newUUID := uuid.Must(uuid.NewV4())
 	createCookie(w, newUUID)
-	sessions.DbSession[newUUID.String()] = email
+	sessions.AddNewSession(newUUID.String(), email)
 }
 
 func createCookie(w http.ResponseWriter, uuid uuid.UUID) {

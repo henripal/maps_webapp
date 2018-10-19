@@ -14,7 +14,7 @@ import (
 )
 
 func init() {
-	if err := users.InitializeDBUsers(); err != nil {
+	if err := users.InitializeDB(); err != nil {
 		log.Fatalln(err)
 	}
 }
@@ -42,6 +42,11 @@ func Test_signup(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error in deleting user")
 	}
+
+	err = sessions.DeleteSessionFromEmail("daffy@gmail.com")
+	if err != nil {
+		t.Fatalf("Error in deleting session")
+	}
 }
 func Test_sessionCreation(t *testing.T) {
 	email := "daffy@gmail.com"
@@ -57,7 +62,12 @@ func Test_sessionCreation(t *testing.T) {
 
 	uuidString := cookie.Value
 
-	if _, ok := sessions.DbSession[uuidString]; !ok {
+	if _, err := sessions.GetEmailFromSession(uuidString); err != nil {
 		t.Fatal("Sessions not Updated")
 	}
+
+	if err := sessions.DeleteSession(uuidString); err != nil {
+		t.Fatal("unable to delete session")
+	}
+
 }

@@ -6,7 +6,7 @@ import (
 )
 
 func init() {
-	if err := InitializeDBUsers(); err != nil {
+	if err := InitializeDB(); err != nil {
 		log.Fatalln(err)
 	}
 }

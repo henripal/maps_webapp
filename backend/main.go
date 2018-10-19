@@ -29,7 +29,7 @@ func main() {
 		AllowCredentials: true,
 	})
 
-	if err := users.InitializeDBUsers(); err != nil {
+	if err := users.InitializeDB(); err != nil {
 		log.Fatalln(err)
 	}
 	user, _ := users.GetUser("henri.palacci@gmail.com")

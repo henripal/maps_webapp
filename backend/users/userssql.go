@@ -9,13 +9,13 @@ import (
 	_ "github.com/lib/pq"
 )
 
-// DBUsers is a pointer towards the Users database objedt
-// it is initialized by InitializeDBUsers
-var DBUsers *sql.DB
+// DB is a pointer towards the Users database objedt
+// it is initialized by InitializeDB
+var DB *sql.DB
 
-// InitializeDBUsers instanciates and intializes the User database into the
-// DBUsers global variable
-func InitializeDBUsers() error {
+// InitializeDB instanciates and intializes the User database into the
+// DBU global variable
+func InitializeDB() error {
 	DBIP := os.Getenv("DBIP")
 	var connStr string
 	if DBIP == "" {
@@ -24,7 +24,7 @@ func InitializeDBUsers() error {
 		connStr = "user=crud dbname=webapp sslmode=disable password=smallpers0n host=" + DBIP
 	}
 	var err error
-	DBUsers, err = sql.Open("postgres", connStr)
+	DB, err = sql.Open("postgres", connStr)
 
 	return err
 }
@@ -33,7 +33,7 @@ func InitializeDBUsers() error {
 // corresponding to the email email
 func GetUser(email string) (User, error) {
 	var u User
-	row := DBUsers.QueryRow("SELECT * FROM USERS WHERE email=$1", email)
+	row := DB.QueryRow("SELECT * FROM USERS WHERE email=$1", email)
 	err := row.Scan(&u.Email, &u.FirstName, &u.LastName, &u.Password)
 	return u, err
 }
@@ -41,13 +41,13 @@ func GetUser(email string) (User, error) {
 // DeleteUser  deletes the user with key email
 func DeleteUser(email string) error {
 	var u User
-	row := DBUsers.QueryRow("SELECT * FROM USERS WHERE email=$1", email)
+	row := DB.QueryRow("SELECT * FROM USERS WHERE email=$1", email)
 	err := row.Scan(&u.Email, &u.FirstName, &u.LastName, &u.Password)
 	if err != nil {
 		log.Fatalln("Could not delete user.")
 	}
 	sqlStatement := `DELETE FROM USERS WHERE email=$1`
-	_, err = DBUsers.Exec(sqlStatement, email)
+	_, err = DB.Exec(sqlStatement, email)
 	return err
 }
 
@@ -57,6 +57,6 @@ func addUser(u User) error {
 		INSERT INTO USERS (email, first, last, password)
 		VALUES ($1, $2, $3, $4)`
 
-	_, err := DBUsers.Exec(sqlStatement, u.Email, u.FirstName, u.LastName, u.Password)
+	_, err := DB.Exec(sqlStatement, u.Email, u.FirstName, u.LastName, u.Password)
 	return err
 }

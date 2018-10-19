@@ -37,6 +37,11 @@ func Test_signup(t *testing.T) {
 	if act.FirstName != "daffy" {
 		t.Fatalf("first names don't match")
 	}
+
+	err = users.DeleteUser("daffy@gmail.com")
+	if err != nil {
+		t.Fatalf("Error in deleting user")
+	}
 }
 func Test_sessionCreation(t *testing.T) {
 	email := "daffy@gmail.com"

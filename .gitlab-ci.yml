@@ -6,9 +6,9 @@ build_and_unit_test:
   stage: build_and_unit_test
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
-    - docker build -e DBIP='159.89.230.190' -t registry.gitlab.com/henripal/webapp_template/backend ./backend/.
+    - docker build --build-arg DBIP='159.89.230.190' -t registry.gitlab.com/henripal/webapp_template/backend ./backend/.
     - docker push registry.gitlab.com/henripal/webapp_template/backend
-    - docker build -e DBIP='159.89.230.190' -t registry.gitlab.com/henripal/webapp_template/frontend ./frontend/.
+    - docker build --build-arg DBIP='159.89.230.190' -t registry.gitlab.com/henripal/webapp_template/frontend ./frontend/.
     - docker push registry.gitlab.com/henripal/webapp_template/frontend
 
 

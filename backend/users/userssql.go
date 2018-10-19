@@ -30,7 +30,7 @@ func InitializeDBUsers() error {
 }
 
 // GetUser returns the User structure from the User database
-// corresponding to the email
+// corresponding to the email email
 func GetUser(email string) (User, error) {
 	var u User
 	row := DBUsers.QueryRow("SELECT * FROM USERS WHERE email=$1", email)

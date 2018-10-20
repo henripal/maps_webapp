@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"net/http/httptest"
@@ -20,7 +21,19 @@ func init() {
 }
 
 func Test_signup(t *testing.T) {
-	reader := strings.NewReader(`{"email":"daffy@gmail.com","firstName":"daffy","lastName":"duck","password":"quack"}`)
+	email := "not@areal.email"
+	firstName := "not"
+	lastName := "areal"
+	password := "quack"
+
+	jsonString := `{"email":"` + email +
+		`","firstName":"` + firstName +
+		`","lastName":"` + lastName +
+		`","password":"` + password + `"}`
+
+	fmt.Println(jsonString)
+
+	reader := strings.NewReader(jsonString)
 	req, err := http.NewRequest("POST", "http://example.com/foo", reader)
 	if err != nil {
 		t.Fatal(err)
@@ -29,21 +42,21 @@ func Test_signup(t *testing.T) {
 	res := httptest.NewRecorder()
 	Signup(res, req)
 
-	act, err := users.GetUser("daffy@gmail.com")
+	act, err := users.GetUser(email)
 	if err != nil {
 		t.Fatalf("Unable to get mock user")
 	}
-	err = bcrypt.CompareHashAndPassword(act.Password, []byte("quack"))
-	if act.FirstName != "daffy" {
+	err = bcrypt.CompareHashAndPassword(act.Password, []byte(password))
+	if act.FirstName != firstName {
 		t.Fatalf("first names don't match")
 	}
 
-	err = users.DeleteUser("daffy@gmail.com")
+	err = users.DeleteUser(email)
 	if err != nil {
 		t.Fatalf("Error in deleting user")
 	}
 
-	err = sessions.DeleteSessionFromEmail("daffy@gmail.com")
+	err = sessions.DeleteSessionFromEmail(email)
 	if err != nil {
 		t.Fatalf("Error in deleting session")
 	}

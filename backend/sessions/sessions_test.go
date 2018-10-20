@@ -14,13 +14,13 @@ func init() {
 
 func Test_AddSession(t *testing.T) {
 	ssid := "ha"
-	email := "daffy@gmail.com"
+	email := "not@areal.email"
 
 	if err := AddNewSession(ssid, email); err != nil {
 		t.Fatal(err)
 	}
 
-	if email, _ := GetEmailFromSession(ssid); email != "daffy@gmail.com" {
+	if e, _ := GetEmailFromSession(ssid); e != email {
 		t.Fatalf("user was not added")
 	}
 

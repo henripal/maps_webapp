@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button v-b-modal.signup-form variant="secondary">Signup</b-button>
+    <b-button v-b-modal.signup-form :variant="buttoncolor">Signup</b-button>
     <b-modal id="signup-form" title="Sign Up" v-model="showModal"
       @shown="focusEmail"
       >
@@ -64,6 +64,7 @@
 
 export default {
   name: 'ModalSignup',
+  props: ['buttoncolor'],
   data() {
     return {
       form: {

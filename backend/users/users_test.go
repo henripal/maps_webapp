@@ -11,17 +11,21 @@ func init() {
 	}
 }
 func Test_AddNewUser(t *testing.T) {
-	var u = User{"daffy@gmail.com", "daffy", "duck", []byte("quack")}
+	email := "not@areal.email"
+	firstName := "not"
+	lastName := "areal"
+	password := "quack"
+	var u = User{email, firstName, lastName, []byte(password)}
 
 	if err := AddNewUser(u); err != nil {
 		t.Fatal(err)
 	}
 
-	u, err := GetUser("daffy@gmail.com")
+	u, err := GetUser(email)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if u.FirstName != "daffy" {
+	if u.FirstName != firstName {
 		t.Fatalf("user was not added")
 	}
 
@@ -29,7 +33,7 @@ func Test_AddNewUser(t *testing.T) {
 		t.Fatalf("double user not detected")
 	}
 
-	err = DeleteUser("daffy@gmail.com")
+	err = DeleteUser(email)
 	if err != nil {
 		t.Fatalf("Unable to delete test user")
 	}

@@ -3,7 +3,7 @@
     <b-navbar-brand to="/">NewCo</b-navbar-brand>
       <b-navbar-nav class="ml-auto">
         <template v-if="!loggedIn">
-          <ModalSignup/>
+          <ModalSignup buttoncolor="secondary"/>
           <ModalSignin/>
         </template>
         <template v-else>

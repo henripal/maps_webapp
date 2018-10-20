@@ -1,18 +1,19 @@
 <template>
 
 <b-jumbotron header="NewCo" lead="Making the world a better place through constructing elegant hierarchies for maximum code reuse and extensibility." >
-  <p>Disrupt digital media with us:</p>
-          <ModalSignup buttoncolor="primary"/>
+  <p>Disrupt digital media with us.</p>
 </b-jumbotron>
 </template>
 
 <script>
-import ModalSignup from '../components/ModalSignup.vue'
 
 export default {
   name: 'home',
+  methods: {
+    showModal() {
+    }
+  },
   components: {
-    ModalSignup
   }, 
   mounted() {
   }

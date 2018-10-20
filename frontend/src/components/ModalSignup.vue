@@ -94,11 +94,9 @@ export default {
       this.$refs.focusThis.focus()
     },
     onSubmit (evt) {
-      console.log("calling onsumbit")
       evt.preventDefault();
       this.$store.dispatch("postSignup", JSON.stringify(this.form))
       .then((response) => {
-        console.log(response);
         this.showModal = false
         this.$store.dispatch('getUser')
       })

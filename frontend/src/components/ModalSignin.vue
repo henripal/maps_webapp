@@ -73,7 +73,6 @@ export default {
       evt.preventDefault();
       this.$store.dispatch("postSignin", JSON.stringify(this.form))
       .then((response) => {
-        console.log(response);
         this.showModal = false
         this.$store.dispatch('getUser')
       })

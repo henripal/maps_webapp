@@ -4,7 +4,7 @@ services:
     frontend:
         image: registry.gitlab.com/henripal/webapp_template/frontend 
         ports:
-          - 8080:80
+          - 80:80
 
     backend:
         image: registry.gitlab.com/henripal/webapp_template/backend 

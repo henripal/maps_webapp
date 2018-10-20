@@ -7,6 +7,6 @@ RUN npm run test:unit
 RUN npm run build
 
 FROM abiosoft/caddy
-EXPOSE 8080
+EXPOSE 80
 COPY --from=builder /app/dist/ /srv/
 COPY --from=builder /app/Caddyfile /etc/Caddyfile

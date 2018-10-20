@@ -43,7 +43,7 @@
           label="Password:"
           label-text-align="left"
         >
-          <b-form-input type="text"
+          <b-form-input type="password"
             v-model="form.password"
             required
             placeholder="Enter password"

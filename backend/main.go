@@ -27,6 +27,7 @@ func main() {
 	c := cors.New(cors.Options{
 		AllowedOrigins: []string{"http://localhost:8080",
 			"http://159.203.183.2:8080",
+			"http://thistemplate.rocks",
 			"http://159.203.183.2"},
 		AllowCredentials: true,
 	})

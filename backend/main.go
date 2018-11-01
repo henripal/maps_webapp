@@ -1,14 +1,8 @@
 package main
 
 import (
-	"fmt"
-	"log"
 	"net/http"
 	"os"
-
-	"webapp_template/backend/auth"
-	"webapp_template/backend/users"
-	"webapp_template/backend/usersapi"
 
 	"github.com/rs/cors"
 )
@@ -32,15 +26,7 @@ func main() {
 		AllowCredentials: true,
 	})
 
-	if err := users.InitializeDB(); err != nil {
-		log.Fatalln(err)
-	}
-	user, _ := users.GetUser("henri.palacci@gmail.com")
-	fmt.Println(user.FirstName)
+	http.HandleFunc("/maps", search)
 
-	http.HandleFunc("/signup", auth.Signup)
-	http.HandleFunc("/signin", auth.Signin)
-	http.HandleFunc("/logout", usersapi.Logout)
-	http.HandleFunc("/user", usersapi.User)
 	http.ListenAndServe(":"+backendPortEnvVariable(), c.Handler(http.DefaultServeMux))
 }

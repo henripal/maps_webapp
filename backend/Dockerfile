@@ -4,9 +4,6 @@ COPY . .
 ARG DBIP 
 ENV DBIP=$DBIP
 RUN go get github.com/rs/cors
-RUN go get golang.org/x/crypto/bcrypt 
-RUN go get github.com/satori/go.uuid
-RUN go get github.com/lib/pq
 RUN go test ./...
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o backend .
 

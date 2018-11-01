@@ -1,23 +1,20 @@
 <template>
   <div id="app">
     <NavBar/>
-    <div>
-      <router-view/>
-    </div>
+    <Home/>
   </div>
 </template>
 
 <script>
 import NavBar from './components/NavBar.vue'
+import Home from './components/Home.vue'
 
 export default {
   name: 'app',
   components: {
-    NavBar
+    NavBar,
+    Home
   },
-  created () {
-    this.$store.dispatch('getUser')
-  }
 }
 </script>
 

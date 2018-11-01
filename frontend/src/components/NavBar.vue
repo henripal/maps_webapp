@@ -1,30 +1,27 @@
 <template>
   <b-navbar type="dark" variant="primary" toggleable="md">
-    <b-navbar-brand to="/">NewCo</b-navbar-brand>
+    <b-navbar-brand to="/">
+     <img
+     src="https://cdn4.iconfinder.com/data/icons/glyphlibrary-one/100/satellite-gps-512.png"
+     class="d-inline-block align-top"
+     alt="BV"
+     height="30"
+     >
+     <img
+     src="https://cdn0.iconfinder.com/data/icons/pixel-perfect-at-24px-volume-6/24/2175-512.png"
+     class="d-inline-block align-top"
+     alt="BV"
+     height="30"
+     >
+    </b-navbar-brand>
       <b-navbar-nav class="ml-auto">
-        <template v-if="!loggedIn">
-          <ModalSignup buttoncolor="secondary"/>
-          <ModalSignin/>
-        </template>
-        <template v-else>
-          <UserMenu/>
-        </template>
 
-        <b-nav-item to="/about">About</b-nav-item>
 
     </b-navbar-nav>
   </b-navbar>
-  <!-- <div class="navbar">
-    <p>this is a navbar</p>
-    <router-link to="/">Home</router-link>
-    <router-link to="/about">About</router-link>
-  </div> -->
 </template>
 
 <script>
-import ModalSignup from '../components/ModalSignup.vue'
-import ModalSignin from '../components/ModalSignin.vue'
-import UserMenu from '../components/UserMenu.vue'
 
 export default {
   name: 'NavBar',
@@ -32,19 +29,11 @@ export default {
     return {
     }
   },
-  components: {
-    ModalSignup,
-    ModalSignin,
-    UserMenu,
-  },
   props: {
   },
   methods: {
   },
   computed: {
-    loggedIn () {
-      return this.$store.getters.loggedIn
-    },
   },
   mounted () {
   }

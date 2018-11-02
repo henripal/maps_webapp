@@ -3,15 +3,18 @@ version: '3'
 services:
     frontend:
         build: ./frontend/
+        restart: always
         ports:
           - 80:80
 
     backend:
         build: ./backend/
+        restart: always
         ports:
             - 8888:8888
 
     model_backend:
         build: ./model_backend/
+        restart: always
         ports:
             - 8008:8008

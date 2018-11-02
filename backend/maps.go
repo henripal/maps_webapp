@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 const apiKey string = "AIzaSyBMqdtriyHGTZHOsD2x-EJzqsK3N9PlPC4"
@@ -20,12 +21,16 @@ func cropSquare(img image.Image, size int) image.Image {
 }
 
 func getImage(location string, w int, h int, zoom int) (image.Image, error) {
-	URL := makeURLFromParams(location, w, h, zoom)
+	URL := makeURLFromParams(prepareLocation(location), w, h, zoom)
 	response, err := http.Get(URL)
 	handleErr(err)
 
 	return readImageFromResponse(response)
 
+}
+
+func prepareLocation(location string) string {
+	return strings.Replace(location, " ", "+", -1)
 }
 
 func readImageFromResponse(response *http.Response) (image.Image, error) {

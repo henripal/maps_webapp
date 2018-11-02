@@ -19,7 +19,7 @@
               </b-card>
               <b-card style="max-width: 20rem;" title="Looks like other cities in:">
                 <b-alert show variant="primary">
-                  The United States
+                  {{ prediction }}
                 </b-alert>
                 <p>This was determined only by looking at the satellite picture on the left.</p>
               </b-card>
@@ -37,19 +37,27 @@ export default {
   data() {
     return {
         address: "",
-        image: null 
+        image: null,
+        prediction: ""
     }
   },
   methods: {
      onSubmit (evt) {
       evt.preventDefault();
-      this.$http.get("http://localhost:8888/maps", {
+      this.$http.get(process.env.VUE_APP_BACKEND_URL + "maps", {
          responseType: 'arraybuffer',
         params : {location: this.address}
       }).then( (res) => {
         this.image = new Buffer(res.data, 'binary').toString('base64')
+        let fd= new FormData()
+        fd.append('file', this.image)
+        this.$http.post(process.env.VUE_APP_MODEL_BACKEND_URL + "upload", fd
+        ).then( (res) =>{
+          this.prediction = res.data.predictions
+        }).catch((err) => {
+          console.log("error")
+        })
       })
-      // alert(JSON.stringify(this.address));
     },
   },
   components: {

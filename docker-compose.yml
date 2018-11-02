@@ -2,11 +2,16 @@ version: '3'
 
 services:
     frontend:
-        image: registry.gitlab.com/henripal/webapp_template/frontend 
+        build: ./frontend/
         ports:
           - 80:80
 
     backend:
-        image: registry.gitlab.com/henripal/webapp_template/backend 
+        build: ./backend/
         ports:
             - 8888:8888
+
+    model_backend:
+        build: ./model_backend/
+        ports:
+            - 8008:8008

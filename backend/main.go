@@ -20,9 +20,10 @@ func backendPortEnvVariable() string {
 func main() {
 	c := cors.New(cors.Options{
 		AllowedOrigins: []string{"http://localhost:8080",
-			"http://159.203.183.2:8080",
-			"http://thistemplate.rocks",
-			"http://159.203.183.2"},
+			"http://142.93.193.166:80",
+			"http://142.93.193.166",
+			"http://localhost:80",
+			"http://localhost"},
 		AllowCredentials: true,
 	})
 

@@ -18,6 +18,9 @@ func backendPortEnvVariable() string {
 }
 
 func main() {
+
+	setAPIKey()
+
 	c := cors.New(cors.Options{
 		AllowedOrigins: []string{"http://localhost:8080",
 			"http://142.93.193.166:80",

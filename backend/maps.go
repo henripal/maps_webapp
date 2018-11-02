@@ -6,11 +6,22 @@ import (
 	"image/png"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
+
+	"github.com/joho/godotenv"
 )
 
-const apiKey string = "AIzaSyBMqdtriyHGTZHOsD2x-EJzqsK3N9PlPC4"
+var apiKey string
+
+func setAPIKey() {
+	err := godotenv.Load(".env.local")
+	if err != nil {
+		log.Fatal("no api key")
+	}
+	apiKey = os.Getenv("API_KEY")
+}
 
 type subImager interface {
 	SubImage(r image.Rectangle) image.Image

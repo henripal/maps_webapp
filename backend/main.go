@@ -25,6 +25,8 @@ func main() {
 		AllowedOrigins: []string{"http://localhost:8080",
 			"http://142.93.193.166:80",
 			"http://142.93.193.166",
+			"http://yourcityfrom.space",
+			"http://yourcityfrom.space:80",
 			"http://localhost:80",
 			"http://localhost"},
 		AllowCredentials: true,

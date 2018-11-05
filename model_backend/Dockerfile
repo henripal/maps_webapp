@@ -13,7 +13,7 @@ RUN conda install -c fastai fastai
 RUN pip install starlette uvicorn python-multipart aiohttp
 
 ADD cities.py cities.py
-ADD finetuned_cities.pth finetuned_cities.pth
+ADD finetuned_cities_0.1.pth finetuned_cities_0.1.pth
 
 # Run it once to trigger resnet download
 RUN python cities.py

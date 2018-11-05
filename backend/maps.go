@@ -66,7 +66,7 @@ func search(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, "Bad String", http.StatusBadRequest)
 	}
-	img, err := getImage(r.FormValue("location"), 224, 248, 13)
+	img, err := getImage(r.FormValue("location"), 224, 248, 15)
 	img = cropSquare(img, 224)
 	writeImage(w, &img)
 }

@@ -34,7 +34,7 @@ classes = ['+Zimbabwe', '+China', '+Mexico', '+Nigeria', '+Israel', '+Benin', '+
 
 fake_data = ImageDataBunch.single_from_classes(path, classes, tfms=get_transforms(), size=224).normalize(imagenet_stats)
 learn = create_cnn(fake_data, models.resnet34)
-learn.model.load_state_dict(torch.load('finetuned_cities_0.1.pth', map_location='cpu'))
+learn.model.load_state_dict(torch.load('resnet50-big-finetuned-bs64.pth', map_location='cpu'))
 
 
 

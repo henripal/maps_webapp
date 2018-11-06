@@ -1,6 +1,6 @@
 <template>
 
-  <b-jumbotron header="Your City From Space" lead="Enter your address; we'll find a satellite image of your neighborhood." >
+  <b-jumbotron header="Your City From Space" lead="Enter your address or the name of your city (or any other place or landmark); we'll find a satellite image of the neighborhood." >
     <b-form @submit="onSubmit" inline>
         <!-- <label class="sr-only" label-for="address">Your Address:</label> -->
         <b-input class="mb-2 mr-sm-2 mb-sm-0" id="address" v-model="address" placeholder="Your Address" />

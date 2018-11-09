@@ -9,6 +9,10 @@ from fastai.vision import (
     models,
     imagenet_stats
 )
+from fastai import (
+    Hook,
+    hook_output
+)
 import torch
 from pathlib import Path
 from io import BytesIO
@@ -18,6 +22,9 @@ import aiohttp
 import asyncio
 import base64
 from PIL import Image
+import matplotlib.pyplot as plt
+import scipy.ndimage
+import numpy as np
 
 
 async def get_bytes(url):
@@ -44,6 +51,11 @@ async def upload(request):
     s = data["file"]
     return predict_image_from_string(s)
 
+@app.route("/heatmap", methods=["POST"])
+async def heatmap(request):
+    data = await request.form()
+    s = data["file"]
+    return heatmap_from_string(s)
 
 def predict_image_from_string(s):
     b = base64.b64decode(s)
@@ -53,8 +65,94 @@ def predict_image_from_string(s):
         "predictions": pred_class.replace('+', ' ').strip()
     })
 
+def heatmap_from_string(s):
+    b = base64.b64decode(s)
+    img = open_image(BytesIO(b))
+    pred_class, pred_idx, outputs = learn.predict(img)
+    img = img.px.reshape(1, 3, 224, 224)
+
+    upsampled = run_gradcam(img)
+
+    figdata_png = upsampled_to_b64bytes(upsampled, img)
+
+    return JSONResponse({
+        "predictions": figdata_png.decode('ascii')
+    })
+
+def upsampled_to_b64bytes(upsampled, img):
+    """
+    this combines upsampled heatmap and img
+    and returns b64 encoded bytes for the image
+    """
+    figfile = BytesIO()
+
+    fig = plt.figure(frameon=False)
+    fig.set_size_inches(2,2)
+
+    # all this to remove borders
+    ax = plt.Axes(fig, [0., 0., 1., 1.])
+    ax.set_axis_off()
+    fig.add_axes(ax)
+    ax.imshow(image_from_tensor(img))
+    ax.imshow(upsampled, alpha=.6)
+    plt.savefig(figfile, format='png', aspect='normal')
+
+    figfile.seek(0) 
+    figdata_png = base64.b64encode(figfile.getvalue())
+
+    return figdata_png
 
 
+def run_gradcam(img):
+    """
+    returns the heatmap for the given image
+    """
+    # last bottleneck module
+    target_layer = learn.model[0][7][2]
+
+    fmap_hook, gradient_hook = create_hooks(target_layer)
+    run_backprop_once(img)
+
+    gradient  = next(iter(gradient_hook.stored))
+    linearization = gradient.cpu().numpy().sum((2, 3)).reshape(-1)
+    fmaps = fmap_hook.stored.cpu().numpy()
+    fmaps = fmaps.reshape(2048, 7, 7)
+
+    hm = np.maximum(0, np.einsum('i, ijk',linearization, fmaps))
+    upsampled = scipy.ndimage.zoom(hm, 32)
+
+    return upsampled
+
+
+def image_from_tensor(imagetensor):
+    numpied = torch.squeeze(imagetensor)
+    numpied = np.moveaxis(numpied.cpu().numpy(), 0 , -1)
+    numpied = numpied - np.min(numpied)
+    numpied = numpied/np.max(numpied)
+    return numpied
+
+def create_hooks(target_layer):
+    feature_maps = hook_output(target_layer)
+    gradient_hook = Hook(target_layer, gradient_torch_hook, is_forward=False)
+
+    return feature_maps, gradient_hook 
+
+
+def run_backprop_once(img):
+    # forward
+    out = learn.model(img)
+
+    # gradient wrt the predicted class only
+    onehot = torch.zeros(learn.data.c)
+    torch.argmax(out)
+    onehot[torch.argmax(out)] = 1.0
+
+    # backwrd
+    out.backward(gradient=onehot.reshape(1, -1))
+
+
+def gradient_torch_hook(self, grad_input, grad_output):
+    return grad_input
 
 
 if __name__ == "__main__":

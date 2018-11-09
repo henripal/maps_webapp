@@ -23,6 +23,9 @@
                 </b-alert>
                 <p>This was determined only by looking at the satellite picture on the left.</p>
               </b-card>
+              <b-card style="max-width: 20rem;" title="Feature Heatmap">
+                 <b-img center thumbnail width="234" height="234" v-bind:src="'data:image/png;base64,'+  this.heatmap" />
+              </b-card>
             </b-card-group>
       </b-container>
     </div>
@@ -38,7 +41,8 @@ export default {
     return {
         address: "",
         image: null,
-        prediction: ""
+        prediction: "",
+        heatmap: null
     }
   },
   methods: {
@@ -54,6 +58,11 @@ export default {
         this.$http.post(process.env.VUE_APP_MODEL_BACKEND_URL + "upload", fd
         ).then( (res) =>{
           this.prediction = res.data.predictions
+          this.$http.post(process.env.VUE_APP_MODEL_BACKEND_URL + "heatmap", fd)
+          .then((res) => {
+            this.heatmap = res.data.predictions
+            console.log(res)
+          })
         }).catch((err) => {
           console.log("error")
         })

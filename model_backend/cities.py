@@ -11,6 +11,7 @@ from fastai.vision import (
 )
 from fastai import (
     Hook,
+    Hooks,
     hook_output
 )
 import torch
@@ -72,8 +73,9 @@ def heatmap_from_string(s):
     img = img.px.reshape(1, 3, 224, 224)
 
     upsampled = run_gradcam(img)
+    gbp_map = run_gbp(img)
 
-    figdata_png = upsampled_to_b64bytes(upsampled, img)
+    figdata_png = upsampled_to_b64bytes(upsampled, gbp_map)
 
     return JSONResponse({
         "predictions": figdata_png.decode('ascii')
@@ -93,8 +95,8 @@ def upsampled_to_b64bytes(upsampled, img):
     ax = plt.Axes(fig, [0., 0., 1., 1.])
     ax.set_axis_off()
     fig.add_axes(ax)
-    ax.imshow(image_from_tensor(img))
-    ax.imshow(upsampled, alpha=.6)
+    combined = np.einsum('ijk, ij->ijk',img, upsampled)
+    ax.imshow(combined)
     plt.savefig(figfile, format='png', aspect='normal')
 
     figfile.seek(0) 
@@ -102,12 +104,21 @@ def upsampled_to_b64bytes(upsampled, img):
 
     return figdata_png
 
+def run_gbp(img):
+    learn.model.eval()
+    create_gp_hooks()
+    img.requires_grad_()
+    run_backprop_once(img)
+
+    return image_from_tensor(img.grad)
+
 
 def run_gradcam(img):
     """
     returns the heatmap for the given image
     """
     # last bottleneck module
+    learn.model.eval()
     target_layer = learn.model[0][7][2]
 
     fmap_hook, gradient_hook = create_hooks(target_layer)
@@ -121,30 +132,39 @@ def run_gradcam(img):
     hm = np.maximum(0, np.einsum('i, ijk',linearization, fmaps))
     upsampled = scipy.ndimage.zoom(hm, 32)
 
-    return upsampled
+    return normalize_image(upsampled)
+
+def normalize_image(image):
+    return (image-np.min(image))/(np.max(image)-np.min(image))
+
+def clamp_gradients_hook(module, grad_in, grad_out):
+    for grad in grad_in:
+        torch.clamp_(grad, min=0.0)
+
+def create_gp_hooks():
+    relu_modules = [module[1] for module in learn.model.named_modules() if str(module[1]) == "ReLU(inplace)"]
+    hooks = Hooks(relu_modules, clamp_gradients_hook, is_forward=False)
 
 
 def image_from_tensor(imagetensor):
     numpied = torch.squeeze(imagetensor)
-    numpied = np.moveaxis(numpied.cpu().numpy(), 0 , -1)
-    numpied = numpied - np.min(numpied)
-    numpied = numpied/np.max(numpied)
-    return numpied
+    numpied = np.moveaxis(numpied.detach().cpu().numpy(), 0 , -1)
+    return normalize_image(numpied)
 
 def create_hooks(target_layer):
-    feature_maps = hook_output(target_layer)
+    fmap_hook = hook_output(target_layer)
     gradient_hook = Hook(target_layer, gradient_torch_hook, is_forward=False)
 
-    return feature_maps, gradient_hook 
+    return fmap_hook, gradient_hook 
 
 
 def run_backprop_once(img):
+    learn.model.zero_grad()
     # forward
     out = learn.model(img)
 
     # gradient wrt the predicted class only
     onehot = torch.zeros(learn.data.c)
-    torch.argmax(out)
     onehot[torch.argmax(out)] = 1.0
 
     # backwrd
